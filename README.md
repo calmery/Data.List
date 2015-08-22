@@ -28,8 +28,8 @@ Modules
   - Ordered lists
 - Generalized functions
   - The "By" operations
-  - User-supplied equality (replacing an Eq context)
-  - User-supplied comparison (replacing an Ord context)
+    - User-supplied equality (replacing an Eq context)
+    - User-supplied comparison (replacing an Ord context)
   - The "generic" operations
 
 Documentation on Hackage
