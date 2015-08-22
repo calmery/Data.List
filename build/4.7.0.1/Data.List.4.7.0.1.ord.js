@@ -166,7 +166,6 @@
             return [[]].concat( Data.Private.nonEmptySubsequences( xs ) )
         },
         
-        // 順列を返す
         permutation: function( xs ){
             var pe = Data.Private.permit( arguments, this, 1 );
             if( pe != true ) return pe;
