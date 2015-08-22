@@ -5,7 +5,7 @@
     Copyright (C) 2015 Kikukawa M. All rights reserved.
     Released under the MIT license ( ../LICENSE.txt )
     
-    Date - Sat Aug 22 2015 18:45:00 GMT+0900 (JST)
+    Date - Sat Aug 22 2015 12:09:00 GMT+0900 (JST)
     
     Data.List - //hackage.haskell.org/package/base-4.8.0.0/docs/src/Data-List.html
     -----------------------------------------------------------------------------
