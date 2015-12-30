@@ -1,4 +1,4 @@
-console.time('a')
+console.time('timer')
 
 console.log( Data.List['++']( [1,2,3], [4,5,6] ) )
 console.log( Data.List.head([1,2]) )
@@ -200,4 +200,4 @@ console.log( Data.List.genericSplitAt(2,[1,2,3,4,5]) )
 console.log( Data.List.genericIndex([1,2,3,4,5],2) )
 console.log( Data.List.genericReplicate(5,[1,2,3,4,5]) )
 
-console.timeEnd('a')
+console.timeEnd('timer')
