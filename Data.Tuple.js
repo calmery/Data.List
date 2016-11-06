@@ -65,7 +65,9 @@
     
 })( window )
 
+/*
 var _ = Data.Tuple
 console.log( _.curry( function( xs ){
     return _.fst( xs ) + _.snd( xs )
 }, 1, 2 ) )
+*/
