@@ -149,6 +149,126 @@
     xs => xs.length
   )
 
+  // List transformations
+
+  const map = curry(
+    ( f, xs ) => xs.map( f )
+  )
+
+  const reverse = curry(
+    xs => xs.reverse()
+  )
+
+  // intersperse( 'a', 'xyz' ) => TypeError: xs.shift is not a function
+  // Fix
+  const _intersperse = curry(
+    ( sep, _xs ) => {
+      if( _xs.length === 0 )
+        return []
+
+      if( _xs.length === 1 )
+        return _xs[0]
+
+      let isString = false
+      if( typeof _xs === 'string' )
+        isString = true
+
+      let xs = clone( _xs )
+      if( isString === true )
+        xs = [].slice.call( xs )
+
+      let x = xs.shift()
+
+      let result = [x].concat( [sep].concat( _intersperse( sep, xs ) ) )
+
+      return isString === true ? result.join( '' ) : result
+    }
+  )
+
+  const intersperse = curry(
+    ( sep, _xs ) => {
+      if( _xs.length === 0 )
+        return []
+
+      if( _xs.length === 1 )
+        return _xs[0]
+
+      let xs = clone( _xs )
+      let x  = xs.shift()
+
+      return [x].concat( [sep].concat( intersperse( sep, xs ) ) )
+    }
+  )
+
+  // Support function
+  const nonEmptySubsequences = _xs => {
+    if( _xs.length === 0 )
+      return []
+
+    let xs = clone( _xs ),
+        x  = xs.shift(),
+        f  = ( ys, r ) => [ys].concat( [[x].concat( ys )], r )
+    return [[x]].concat( foldr( f, [], nonEmptySubsequences( xs ) ) )
+  }
+
+  const subsequences = curry(
+    xs => [[]].concat( nonEmptySubsequences( xs ) )
+  )
+
+  const permutations = curry(
+    xs0 => {
+      const perms = ( _ts, _is ) => {
+        let ts = _ts.concat()
+        let is = _is.concat()
+
+        if( ts.length === 0 )
+          return []
+
+        let t = ts.shift()
+
+        const interleave_ = ( f, _ys, r ) => {
+          let ys = _ys.concat()
+
+          if( ys.length === 0 )
+            return [ts, r]
+
+          let y = ys.shift()
+
+          let response = interleave_( x => f( [y].concat( x ) ), ys, r )
+          let us = response[0]
+          let zs = response[1]
+
+          return [[y].concat( us ), [f( [t].concat( [y].concat( us ) ) )].concat( zs )]
+        }
+
+        const interleave = ( _xs, r ) => {
+          let xs = _xs.concat()
+          let response = interleave_( x => x, xs, r )
+
+          let _  = response[0]
+          let zs = response[1]
+
+          return zs
+        }
+
+        return foldr( interleave, ( perms( ts, [t].concat( is ) ) ), ( permutations( is ) ) )
+      }
+
+      return [xs0].concat( perms( xs0, [] ) )
+    }
+
+  )
+
+  // Reducing lists (folds)
+
+  const foldr = curry(
+    ( func, fst, _xs ) => {
+      if( _xs.length === 0 ) return fst
+      let xs = clone( _xs )
+      return foldr( func, func( xs.pop(), fst ), xs )
+    }
+  )
+
   // Export
 
   self['++']     = concat
@@ -160,4 +280,10 @@
   self['null']   = isNull
   self['length'] = length
 
-} )(  typeof module === 'object' && module.hasOwnProperty( 'exports' ) ? module.exports : this  )
+  self['permutations'] = permutations
+  self['subsequences'] = subsequences
+  self['intersperse']  = _intersperse
+
+  self['foldr'] = foldr
+
+} )( typeof module === 'object' && module.hasOwnProperty( 'exports' ) ? module.exports : this )
