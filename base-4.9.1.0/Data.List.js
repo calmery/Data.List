@@ -36,17 +36,17 @@
   // Basic functions
 
   // (++) :: [a] -> [a] -> [a]
-  const concat_o = ( _xs, ys ) => {
+  const combine_o = ( _xs, ys ) => {
     if( _xs.length === 0 )
       return ys
 
     const xs = clone( _xs )
     const x  = xs.shift()
 
-    return　[x].concat( concat_o( xs, ys ) )
+    return　[x].concat( combine_o( xs, ys ) )
   }
 
-  const concat = curry(
+  const combine = curry(
     ( xs, ys ) => xs.concat( ys )
   )
 
@@ -200,6 +200,28 @@
     }
   )
 
+  // Doesnt work
+  const transpose = curry(
+    xxs => {
+      if( xxs.length === 0 )
+        return []
+
+      if( xxs[0].length === 0 )
+        return transpose( xxs.slice( 1 ) )
+
+      let xs = xxs.shift()
+      let x  = xs.shift()
+
+      let a = []
+      xxs.forEach( xs => a.push( xs[0] ) )
+
+      let b = []
+      xxs.forEach( xs => b.push( xs.slice( 1 ) ) )
+
+      return [x].concat( a ).concat( transpose( [[xs]].concat( b ) ) )
+    }
+  )
+
   // Support function
   const nonEmptySubsequences = _xs => {
     if( _xs.length === 0 )
@@ -269,9 +291,16 @@
     }
   )
 
+  // Special folds
+
+  const concat = curry(
+    xxs => foldr( ( xs, ys ) => xs.concat( ys ), [], xxs )
+  )
+
+
   // Export
 
-  self['++']     = concat
+  self['++']     = combine
   self['head']   = head
   self['last']   = last
   self['tail']   = tail
@@ -283,7 +312,10 @@
   self['permutations'] = permutations
   self['subsequences'] = subsequences
   self['intersperse']  = _intersperse
+  self['transpose']    = transpose
 
   self['foldr'] = foldr
+
+  self['concat'] = concat
 
 } )( typeof module === 'object' && module.hasOwnProperty( 'exports' ) ? module.exports : this )
