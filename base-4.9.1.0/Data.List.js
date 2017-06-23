@@ -200,28 +200,6 @@
     }
   )
 
-  // Doesnt work
-  const transpose = curry(
-    xxs => {
-      if( xxs.length === 0 )
-        return []
-
-      if( xxs[0].length === 0 )
-        return transpose( xxs.slice( 1 ) )
-
-      let xs = xxs.shift()
-      let x  = xs.shift()
-
-      let a = []
-      xxs.forEach( xs => a.push( xs[0] ) )
-
-      let b = []
-      xxs.forEach( xs => b.push( xs.slice( 1 ) ) )
-
-      return [x].concat( a ).concat( transpose( [[xs]].concat( b ) ) )
-    }
-  )
-
   // Support function
   const nonEmptySubsequences = _xs => {
     if( _xs.length === 0 )
