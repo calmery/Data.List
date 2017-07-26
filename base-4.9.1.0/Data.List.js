@@ -287,10 +287,12 @@
   self['null']   = isNull
   self['length'] = length
 
+  self['map'] = map
+  self['reverse'] = reverse
+  self['intersperse']  = _intersperse
+
   self['permutations'] = permutations
   self['subsequences'] = subsequences
-  self['intersperse']  = _intersperse
-  self['transpose']    = transpose
 
   self['foldr'] = foldr
 
